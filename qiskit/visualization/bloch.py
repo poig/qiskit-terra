@@ -133,6 +133,8 @@ class Bloch:
             Vector arrowhead style (from matplotlib's arrow style).
         vector_mutation (int):
             Width of vectors arrowhead.
+        linestyle (str):
+            select linestyle.
         view (list):
             Azimuthal and Elevation viewing angles.
         xlabel (list):
@@ -205,6 +207,8 @@ class Bloch:
         self.vector_style = "-|>"
         #: Sets the width of the vectors arrowhead
         self.vector_mutation = 20
+        #: LineStyle, default = "solid"
+        self.linestyle = "solid"
 
         # ---point options---
         # List of colors for Bloch point markers, default = ['b','g','r','y']
@@ -311,6 +315,7 @@ class Bloch:
         string += "vector_width:    " + str(self.vector_width) + "\n"
         string += "vector_style:    " + str(self.vector_style) + "\n"
         string += "vector_mutation: " + str(self.vector_mutation) + "\n"
+        string += "linestyle        " + str(self.linestyle) + "\n"
         string += "view:            " + str(self.view) + "\n"
         string += "xlabel:          " + str(self.xlabel) + "\n"
         string += "xlpos:           " + str(self.xlpos) + "\n"
@@ -355,18 +360,21 @@ class Bloch:
             self.points.append(points)
             self.point_style.append("m")
 
-    def add_vectors(self, vectors):
+    def add_vectors(self, vectors, linestyle):
         """Add a list of vectors to Bloch sphere.
 
         Args:
             vectors (array_like):
                 Array with vectors of unit length or smaller.
+            linestyle (str):
+                Set the patch linestyle.
         """
         if isinstance(vectors[0], (list, np.ndarray)):
             for vec in vectors:
                 self.vectors.append(vec)
         else:
             self.vectors.append(vectors)
+        self.linestyle = linestyle
 
     def add_annotation(self, state_or_vector, text, **kwargs):
         """Add a text or LaTeX annotation to Bloch sphere,
@@ -604,6 +612,7 @@ class Bloch:
                     mutation_scale=self.vector_mutation,
                     lw=self.vector_width,
                     arrowstyle=self.vector_style,
+                    linestyle=self.linestyle,
                     color=color,
                 )
 

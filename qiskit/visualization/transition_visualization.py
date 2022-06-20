@@ -270,6 +270,7 @@ def visualize_transition(circuit, trace=False, saveas=None, fpg=100, spg=2):
             self.last_gate = -2
             self.colors = []
             self.pnts = []
+            self.linestyle = "solid"
 
     namespace = Namespace()
     namespace.new_vec = starting_pos
@@ -285,7 +286,7 @@ def visualize_transition(circuit, trace=False, saveas=None, fpg=100, spg=2):
 
         # starts with default vector [0,0,1]
         if i == 0:
-            sphere.add_vectors(namespace.new_vec)
+            sphere.add_vectors(namespace.new_vec, namespace.linestyle)
             namespace.pnts[0][0].append(namespace.new_vec[0])
             namespace.pnts[0][1].append(namespace.new_vec[1])
             namespace.pnts[0][2].append(namespace.new_vec[2])
@@ -299,7 +300,7 @@ def visualize_transition(circuit, trace=False, saveas=None, fpg=100, spg=2):
         namespace.pnts[gate_counter + 1][1].append(namespace.new_vec[1])
         namespace.pnts[gate_counter + 1][2].append(namespace.new_vec[2])
 
-        sphere.add_vectors(namespace.new_vec)
+        sphere.add_vectors(namespace.new_vec, namespace.linestyle)
         if trace:
             # sphere.add_vectors(namespace.points)
             for point_set in namespace.pnts:
