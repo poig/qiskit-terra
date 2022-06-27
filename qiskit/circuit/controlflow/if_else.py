@@ -67,6 +67,48 @@ class IfElseOp(ControlFlowOp):
         c_0: ╡0          ╞
              └───────────┘
 
+    Examples:
+
+        Create a if_else circuit
+
+        .. jupyter-execute::
+            from qiskit import QuantumRegister,ClassicalRegister,QuantumCircuit
+            from qiskit.providers.aer import AerSimulator
+            from qiskit.circuit import IfElseOp
+            from math import pi
+
+            # true_body & false_body qubit and classical bit number need to be the same
+            true_body = QuantumCircuit(3)# when true case
+            true_body.h(true_body.qubits[1:3]) 
+
+            false_body = QuantumCircuit(3)# when false case
+            false_body.rx(pi/2,0)
+
+            qbit = QuantumRegister(3,"q")
+            cbit = ClassicalRegister(3,"c")
+            qc = QuantumCircuit(qbit,cbit)
+            qc.y(0)
+            qc.measure(0, 0)
+
+            #method 1
+            op = IfElseOp((qc.clbits[0],1),true_body,false_body)
+            qc.append(op, [0,1,2])
+
+            #method 2
+            #qc.if_else((qc.clbits[0],True),true_body,false_body, [0,1,2],[])
+
+            #method 3
+            #with qc.if_test((qc.clbits[0], 1)) as else_:
+            #    qc.h(qc.qubits[1:3]) 
+            #with else_:
+            #    qc.rx(pi/2,0)
+
+            qc.measure_all(add_bits = False)
+            display(qc.draw(cregbundle=False))
+            job = AerSimulator(method="statevector").run(qc) 
+
+            #with y gate it should output more than 2 state
+            print(job.result().get_counts())
     """
 
     def __init__(

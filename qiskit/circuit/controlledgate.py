@@ -90,6 +90,21 @@ class ControlledGate(Gate):
            qc2 = QuantumCircuit(4)
            qc2.append(custom, [0, 3, 1, 2])
            qc2.draw()
+
+        Create a controlled custom gate with 'ControlledGate'
+        
+        .. jupyter-execute::
+
+           from qiskit import QuantumCircuit
+           from qiskit.circuit import ControlledGate
+           from qiskit.circuit.library import RYGate
+           from math import pi
+           
+           rry = RYGate(pi/8)
+           ccry = ControlledGate(name="cry", num_qubits=3, params=rry.params, num_ctrl_qubits=2, definition=rry.definition,ctrl_state='01', base_gate=rry) #ctrl_state to custom control state
+           circ = QuantumCircuit(3)
+           circ.append(ccry,[0,1,2])
+           circ.draw()
         """
         self.base_gate = None if base_gate is None else base_gate.copy()
         super().__init__(name, num_qubits, params, label=label)
